@@ -1,7 +1,9 @@
 This project is based on Python3.12 and Django Web Framework.
 
 ## Requirements
-Python 3.12.1
+- Docker
+- Docker Compose
+- Python 3.12.1
 
 ## Installation via Docker
  - Update local env file with environment variables from env_sample file.

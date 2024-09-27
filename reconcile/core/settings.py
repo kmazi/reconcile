@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'reconcile.api.user',
+    'reconcile.api.reconciliation',
 ]
 
 AUTH_USER_MODEL = 'user.User'
