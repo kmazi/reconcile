@@ -1,0 +1,41 @@
+volumes:
+  postgres_data: {}
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/dev/django/Dockerfile
+    image: reconcile_app
+    container_name: "reconcile"
+    restart: unless-stopped
+    volumes:
+      - .:/app/
+    env_file:
+      - .env
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/dev/postgres/Dockerfile
+    image: reconcile_postgres
+    container_name: "reconcilepgdb"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  admin:
+    image: dpage/pgadmin4:7.4
+    container_name: "reconcilepgadmin"
+    depends_on:
+      - db
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=touchstone@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - 8500:80
