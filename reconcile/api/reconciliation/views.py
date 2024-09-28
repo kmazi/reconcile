@@ -3,6 +3,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from reconcile.api.reconciliation.normalizer import normalize
 from reconcile.api.reconciliation.serializers import FileUploadSerializer
 
 
@@ -16,9 +17,11 @@ class CSVUploadView(APIView):
         if serializer.is_valid(raise_exception=True):
             files = serializer.validated_data
             # Normalize the data
+            normalized_source = normalize(data=files['source_file'])
+            normalized_target = normalize(data=files['target_file'])
             # Reconcile the data
             # Save file and report to database
-            return Response(data=files)
+            return Response(data='Working as expected.')
 
 
 class ReconciliationReportView(APIView):
