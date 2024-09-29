@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.request import Request
@@ -8,7 +9,6 @@ from reconcile.api.reconciliation.models import Report
 from reconcile.api.reconciliation.normalizer import normalize
 from reconcile.api.reconciliation.reconciler import reconcile_files
 from reconcile.api.reconciliation.serializers import FileUploadSerializer
-
 
 
 # Create your views here.
@@ -47,5 +47,5 @@ class ReconciliationReportView(APIView):
     template_name = 'reconciliation/report.html'
 
     def get(self, request: Request, report_id: int):
-        report = Report.objects.get_or_404(id=report_id)
+        report = get_object_or_404(Report, id=report_id)
         return Response({'report': report})
