@@ -10,6 +10,7 @@ from reconcile.api.reconciliation.reconciler import reconcile_files
 from reconcile.api.reconciliation.serializers import FileUploadSerializer
 
 
+
 # Create your views here.
 class CSVUploadView(APIView):
     parser_classes = (MultiPartParser,)
@@ -26,9 +27,16 @@ class CSVUploadView(APIView):
             report = reconcile_files(source=normalized_source,
                                      target=normalized_target)
             # Save file and report to database
-            report = Report(source_records_missing_in_target=report['source_records_missing_in_target'],
-                            target_records_missing_in_source=report['target_records_missing_in_source'],
-                            descrepancies=report['descrepancies'])
+            report = Report(
+                source_records_missing_in_target=report[
+                    'source_records_missing_in_target'],
+                target_records_missing_in_source=report[
+                    'target_records_missing_in_source'],
+                descrepancies=report['descrepancies'],
+                source_columns_missing_in_target=report[
+                    'source_columns_missing_in_target'],
+                target_columns_missing_in_source=report[
+                    'target_columns_missing_in_source'],)
             report.save()
             return Response(data={'message': 'Files uploaded successfully',
                                   'report_id': report.id}, status=201)
@@ -39,5 +47,5 @@ class ReconciliationReportView(APIView):
     template_name = 'reconciliation/report.html'
 
     def get(self, request: Request, report_id: int):
-        report = Report.objects.get(id=report_id)
+        report = Report.objects.get_or_404(id=report_id)
         return Response({'report': report})

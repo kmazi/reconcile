@@ -12,6 +12,14 @@
     <h4>Target Records Missing in Source</h2>
         {{ report.target_records_missing_in_source | safe }}
 
+    {% if report.source_columns_missing_in_target or report.target_columns_missing_in_source %}
+        <h4>Source Columns Missing in Target</h2>
+            {{ report.source_columns_missing_in_target | safe }}
+
+        <h4>Target Columns Missing in Source</h2>
+            {{ report.target_columns_missing_in_source | safe }}
+    {% endif %}
+
     <h4>Descrepancies</h2>
         {{ report.descrepancies | safe }}
   </body>

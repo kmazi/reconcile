@@ -1,5 +1,6 @@
 import pandas
 from django.core.files.uploadedfile import UploadedFile
+from rest_framework.exceptions import APIException
 
 
 def normalize_date(col: pandas.Series) -> pandas.Series:
@@ -32,5 +33,8 @@ def normalize(data: UploadedFile) -> pandas.DataFrame:
             case _:
                 continue
     # Sort dataframe by ID column
-    df = df.sort_values(by='ID')
+    try:
+        df = df.sort_values(by='ID')
+    except KeyError as e:
+        raise APIException(f'{str(e)} column not found or is not ID column.')
     return df
