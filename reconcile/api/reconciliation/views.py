@@ -1,8 +1,10 @@
 from rest_framework.parsers import MultiPartParser
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from reconcile.api.reconciliation.models import Report
 from reconcile.api.reconciliation.normalizer import normalize
 from reconcile.api.reconciliation.reconciler import reconcile_files
 from reconcile.api.reconciliation.serializers import FileUploadSerializer
@@ -24,10 +26,18 @@ class CSVUploadView(APIView):
             report = reconcile_files(source=normalized_source,
                                      target=normalized_target)
             # Save file and report to database
-            return Response(data={'files': files,
-                                  'report': report})
+            report = Report(source_records_missing_in_target=report['source_records_missing_in_target'],
+                            target_records_missing_in_source=report['target_records_missing_in_source'],
+                            descrepancies=report['descrepancies'])
+            report.save()
+            return Response(data={'message': 'Files uploaded successfully',
+                                  'report_id': report.id}, status=201)
 
 
 class ReconciliationReportView(APIView):
-    def get(self, request: Request):
-        return Response({'data': "It's working"})
+    renderer_classes = (TemplateHTMLRenderer,)
+    template_name = 'reconciliation/report.html'
+
+    def get(self, request: Request, report_id: int):
+        report = Report.objects.get(id=report_id)
+        return Response({'report': report})

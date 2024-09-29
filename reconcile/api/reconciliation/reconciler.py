@@ -30,9 +30,9 @@ def extract_common_records(data: pandas.DataFrame, common_ids: List) -> pandas.D
 def reconcile_files(source: pandas.DataFrame, target: pandas.DataFrame):
     """Reconcile two dataframes."""
     report = {'source_records_missing_in_target': extract_missing_records(
-        source=source, target=target),
+        source=source, target=target).to_html(),
         'target_records_missing_in_source': extract_missing_records(
-        source=target, target=source), }
+        source=target, target=source).to_html(), }
 
     # Extract common ids
     common_ids = extract_common_ids(source=source, target=target)
@@ -44,5 +44,5 @@ def reconcile_files(source: pandas.DataFrame, target: pandas.DataFrame):
 
     # Compare source and target dataframes
     result = source_common_records.compare(target_common_records)
-    report['descrepancies'] = result.to_dict(orient='split')
+    report['descrepancies'] = result.to_html()
     return report

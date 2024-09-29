@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>File Report</title>
+  </head>
+  <body>
+    <h2>Reconciliation Report</h2>
+    <h4>Source Records Missing in Target</h2>
+        {{ report.source_records_missing_in_target | safe }}
+
+    <h4>Target Records Missing in Source</h2>
+        {{ report.target_records_missing_in_source | safe }}
+
+    <h4>Descrepancies</h2>
+        {{ report.descrepancies | safe }}
+  </body>
+</html>
