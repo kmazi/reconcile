@@ -1,4 +1,4 @@
-This project is based on Python3.12 and Django Web Framework.
+Simple API to reconcile data between a target and source file(CSV) written in Python leveraging on the Django Rest Framework.
 
 ## Requirements
 - Docker
@@ -18,6 +18,7 @@ This project is based on Python3.12 and Django Web Framework.
 - Run `pip install -r requirements/dev.txt` to install development dependencies.
 - Run `python manage.py migrate` to run migrations.
 - Run `Python manage.py runserver` to start the development server.
+- Link to documentation: `http://127.0.0.1:8000/v1/docs/`
 - Access app default url `http://127.0.0.1:8000`
 - Access file upload endpoint by sending a post request to `http://127.0.0.1:8000/v1/reconciliation/upload_csv`. Send a form with two fields named `source_file` and `target_file`
 - Get file reconciliation report by making a get request to the endpoint `http://127.0.0.1:8000/v1/reconciliation/report/<int:report_id>`
@@ -29,6 +30,7 @@ This project is based on Python3.12 and Django Web Framework.
  - Pull recent changes from remote repository `git clone git@github.com:kmazi/reconcile.git`.
  - Change directory to application folder `reconcile`.
  - Run `docker-compose --file dev.docker-compose.yml up --build -d` to build container and start up the app. This command creates a container running the reconcile app, postgres database container and a pgadmin container. Please make sure ports 8000, 8500 are free on your machine.
+ - Link to documentation: `http://127.0.0.1:8000/v1/docs/`
  - Access app default url `http://127.0.0.1:8000`
  - Access file upload endpoint by sending a post request to `http://127.0.0.1:8000/v1/reconciliation/upload_csv`. Send a form with two fields named `source_file` and `target_file`
  - Get file reconciliation report by making a get request to the endpoint `http://127.0.0.1:8000/v1/reconciliation/report/<int:report_id>`
