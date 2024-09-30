@@ -20,7 +20,11 @@ def normalize_amount(col: pandas.Series) -> pandas.Series:
 
 def normalize(data: UploadedFile, name='') -> pandas.DataFrame:
     """Normalize incoming data."""
-    df = pandas.read_csv(data)
+    try:
+        df = pandas.read_csv(data)
+    except (pandas.errors.ParserError, UnicodeDecodeError):
+        raise APIException(f'Invalid {name} file format: Please upload csv files.')
+
     # normalize columns
     for col in df.columns:
         match col:
