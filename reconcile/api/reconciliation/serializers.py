@@ -33,8 +33,10 @@ class FileUploadSerializer(serializers.Serializer):
     def create(self, validated_data) -> Report:
         files = validated_data
         # Normalize the data
-        normalized_source = normalize(data=files['source_file'])
-        normalized_target = normalize(data=files['target_file'])
+        normalized_source = normalize(data=files['source_file'],
+                                      name='source')
+        normalized_target = normalize(data=files['target_file'],
+                                      name='target')
         # Reconcile the data
         report = reconcile_files(source=normalized_source,
                                  target=normalized_target)

@@ -18,7 +18,7 @@ def normalize_amount(col: pandas.Series) -> pandas.Series:
     return col
 
 
-def normalize(data: UploadedFile) -> pandas.DataFrame:
+def normalize(data: UploadedFile, name='') -> pandas.DataFrame:
     """Normalize incoming data."""
     df = pandas.read_csv(data)
     # normalize columns
@@ -27,7 +27,11 @@ def normalize(data: UploadedFile) -> pandas.DataFrame:
             case 'Name':
                 df[col] = normalize_name(df[col])
             case 'Date':
-                df[col] = normalize_date(df[col])
+                try:
+                    df[col] = normalize_date(df[col])
+                except ValueError as e:
+                    raise APIException(
+                        f'Invalid date format present in Date column of {name} file')
             case 'Amount':
                 df[col] = normalize_amount(df[col])
             case _:
